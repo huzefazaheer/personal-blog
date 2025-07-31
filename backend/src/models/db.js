@@ -10,6 +10,18 @@ async function getAllPosts(jump = 0, limit = 10) {
   return posts
 }
 
+async function getAllPublicPosts(jump = 0, limit = 10) {
+  const posts = await prisma.post.findMany({
+    where: {
+      isPublished: true,
+    },
+    skip: jump,
+    take: limit,
+  })
+
+  return posts
+}
+
 async function getAllUsers() {
   const users = await prisma.user.findMany({})
 
@@ -125,8 +137,16 @@ async function createComment(comment, userId, postId) {
   })
 }
 
+async function setPostPublic(id) {
+  await prisma.post.update({
+    where: { id: id },
+    data: { isPublished: true },
+  })
+}
+
 module.exports = {
   getAllPosts,
+  getAllPublicPosts,
   getPostById,
   getPostById,
   getCommentById,
@@ -142,4 +162,5 @@ module.exports = {
   createComment,
   updateComment,
   updatePost,
+  setPostPublic,
 }

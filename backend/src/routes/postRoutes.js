@@ -5,8 +5,10 @@ const {
   getPostById,
   deletePost,
   updatePost,
+  getAllPublicPosts,
+  setPostPublic,
 } = require('../models/db')
-const { auth, isAdmin } = require('../controllers/auth')
+const { auth, isAdmin, login } = require('../controllers/auth')
 
 const postRouter = Router()
 
@@ -16,8 +18,30 @@ postRouter.get('/', async (req, res) => {
     jump = req.query.j * 10
   }
   try {
+    const posts = await getAllPublicPosts()
+    res.json(posts)
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.get('/all', auth, isAdmin, async (req, res) => {
+  let jump = 0
+  if (req.query.j) {
+    jump = req.query.j * 10
+  }
+  try {
     const posts = await getAllPosts()
     res.json(posts)
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.post('/:id/setpublic', auth, isAdmin, async (req, res) => {
+  try {
+    await setPostPublic(req.params.id)
+    res.status(200).json({ status: 'Request successfull' })
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })
   }

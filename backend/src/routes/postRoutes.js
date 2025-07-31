@@ -1,6 +1,12 @@
 const { Router } = require('express')
-const { getAllPosts, createPost, getPostById } = require('../models/db')
+const {
+  getAllPosts,
+  createPost,
+  getPostById,
+  deletePost,
+} = require('../models/db')
 const { auth, isAdmin } = require('../controllers/auth')
+const commentRouter = require('./commentRoutes')
 
 const postRouter = Router()
 
@@ -41,17 +47,29 @@ postRouter.get('/:id', async (req, res) => {
 
 postRouter.delete('/:id', async (req, res) => {
   try {
+    await deletePost(req.params.id)
+    res.status(200)
+    return
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })
   }
 })
 
-postRouter.put('/:id', async (req, res) => {
-  try {
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Database Error' })
-  }
-})
+// postRouter.put('/:id', async (req, res) => {
+//   try {
+//   } catch (error) {
+//     res.status(500).json({ error: 'Internal Database Error' })
+//   }
+// })
+
+postRouter.use(
+  '/:id/comments',
+  (req, res, next) => {
+    req.postId = req.params.id
+    next()
+  },
+  commentRouter,
+)
 
 module.exports = postRouter
 

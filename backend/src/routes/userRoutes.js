@@ -32,6 +32,7 @@ userRouter.delete('/:id', auth, isAdmin, async (req, res) => {
   try {
     await deleteUser(req.params.id)
     res.status(200)
+    return
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Internal Database Error' })
@@ -41,6 +42,8 @@ userRouter.delete('/:id', auth, isAdmin, async (req, res) => {
 userRouter.put('/:id/makeadmin', auth, isAdmin, async (req, res) => {
   try {
     await makeAdminById(req.params.id)
+    res.status(200)
+    return
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })
   }

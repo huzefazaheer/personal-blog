@@ -75,11 +75,33 @@ async function deleteUser(id) {
   })
 }
 
+async function deletePost(id) {
+  await prisma.post.delete({
+    where: { id: id },
+  })
+}
+
+async function deleteComment(id) {
+  await prisma.comment.delete({
+    where: { id: id },
+  })
+}
+
 async function makeAdminById(id) {
   await prisma.user.update({
     where: { id: id },
     data: {
       isAdmin: true,
+    },
+  })
+}
+
+async function createComment(comment, userId, postId) {
+  await prisma.comment.create({
+    data: {
+      comment: comment,
+      commentedById: userId,
+      commentedPostId: postId,
     },
   })
 }
@@ -96,4 +118,7 @@ module.exports = {
   getUserById,
   deleteUser,
   makeAdminById,
+  deletePost,
+  deleteComment,
+  createComment,
 }

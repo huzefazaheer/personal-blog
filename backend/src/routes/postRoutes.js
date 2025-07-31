@@ -1,5 +1,6 @@
 const { Router } = require('express')
-const { getAllPosts } = require('../models/db')
+const { getAllPosts, createPost, getPostById } = require('../models/db')
+const { auth, isAdmin } = require('../controllers/auth')
 
 const postRouter = Router()
 
@@ -12,10 +13,46 @@ postRouter.get('/', async (req, res) => {
     const posts = await getAllPosts()
     res.json(posts)
   } catch (error) {
-    res.json(error)
+    res.status(500).json({ error: 'Internal Database Error' })
   }
 })
 
-postRouter.post('/', async (req, res) => {})
+postRouter.post('/', auth, isAdmin, async (req, res) => {
+  try {
+    if (!(req.body.title && req.body.text && req.user.id)) {
+      res.status(400).json({ error: 'Bad Request: Missing required fields ' })
+    }
+
+    await createPost(req.body.title, req.body.text, req.user.id)
+    res.status(200).json({ status: 'Data sent successfull' })
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.get('/:id', async (req, res) => {
+  try {
+    const post = await getPostById(req.params.id)
+    res.json(post)
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.delete('/:id', async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.put('/:id', async (req, res) => {
+  try {
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
 
 module.exports = postRouter
+
+//todo add is published

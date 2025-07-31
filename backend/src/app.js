@@ -7,7 +7,7 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use('/posts', postRouter)
-app.use('/user', userRouter)
+app.use('/users', userRouter)
 app.use('/auth', authRouter)
 
 app.listen(8080)

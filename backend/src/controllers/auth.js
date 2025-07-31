@@ -1,7 +1,7 @@
 require('dotenv').config()
 const bcrypt = require('bcryptjs')
 const jsonwebtoken = require('jsonwebtoken')
-const { createUser } = require('../models/db')
+const { createUser, getUserById } = require('../models/db')
 
 async function signup(req, res) {
   if (req.body && req.body.username && req.body.password) {
@@ -20,6 +20,7 @@ async function signup(req, res) {
       )
       res.json(jwt)
     } catch (error) {
+      console.log(error)
       res
         .status(409)
         .json({ error: 'Username already taken. Please choose another.' })
@@ -29,7 +30,7 @@ async function signup(req, res) {
   }
 }
 
-async function login(req, res, next) {
+async function auth(req, res, next) {
   const authHeader = req.headers['authorization']
   if (!authHeader) {
     res.status(401).json({ error: 'Unauthorized: Missing or invalid token' })
@@ -40,8 +41,32 @@ async function login(req, res, next) {
   jsonwebtoken.verify(token, process.env.SECRET, function (error, decoded) {
     if (error) {
       res.status(403).json({ error: "Forbidden: You don't have permission" })
-    } else next()
+    } else {
+      req.user = jsonwebtoken.decode(token)
+      next()
+    }
   })
 }
 
-module.exports = { signup, login }
+async function isAdmin(req, res, next) {
+  if (req.user) {
+    if (req.user.isAdmin) {
+      next()
+    } else {
+      res.status(403).json({ error: "Forbidden: You don't have permission" })
+    }
+  } else return
+}
+
+async function login(req, res) {
+  const user1 = req.user
+  const user = await getUserById(user1.id)
+  const jwt = jsonwebtoken.sign(
+    { id: user.id, username: user.username, isAdmin: user.isAdmin },
+    process.env.SECRET,
+    { expiresIn: '1d' },
+  )
+  res.json(jwt)
+}
+
+module.exports = { signup, auth, isAdmin, login }

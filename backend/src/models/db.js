@@ -42,7 +42,7 @@ async function getCommentById(id) {
 
 async function getPostComments(id) {
   const comments = await prisma.comment.findMany({
-    where: { postCommented: id },
+    where: { commentedPostId: id },
   })
 
   return comments

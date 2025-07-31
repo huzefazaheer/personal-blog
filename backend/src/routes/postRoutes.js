@@ -6,7 +6,6 @@ const {
   deletePost,
 } = require('../models/db')
 const { auth, isAdmin } = require('../controllers/auth')
-const commentRouter = require('./commentRoutes')
 
 const postRouter = Router()
 
@@ -62,14 +61,11 @@ postRouter.delete('/:id', async (req, res) => {
 //   }
 // })
 
-postRouter.use(
-  '/:id/comments',
-  (req, res, next) => {
-    req.postId = req.params.id
-    next()
-  },
-  commentRouter,
-)
+postRouter.use('/:id/comments', (req, res, next) => {
+  req.postId = req.params.id
+  const red = '/comments?postid=' + req.params.id
+  res.redirect(red)
+})
 
 module.exports = postRouter
 

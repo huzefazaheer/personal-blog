@@ -13,9 +13,10 @@ const { auth, isAdmin } = require('../controllers/auth')
 
 commentRouter.get('/', async (req, res) => {
   try {
-    const comments = await getPostComments()
+    const comments = await getPostComments(req.query.postid)
     res.json(comments)
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Internal Database Error' })
   }
 })
@@ -26,7 +27,7 @@ commentRouter.post('/', auth, isAdmin, async (req, res) => {
       res.status(400).json({ error: 'Bad Request: Missing required fields ' })
     }
 
-    await createComment(req.body.comment, req.user.id, req.postId)
+    await createComment(req.body.comment, req.user.id, req.query.postid)
     res.status(200).json({ status: 'Data sent successfull' })
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })

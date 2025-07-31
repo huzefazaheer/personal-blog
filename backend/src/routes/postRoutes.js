@@ -4,6 +4,7 @@ const {
   createPost,
   getPostById,
   deletePost,
+  updatePost,
 } = require('../models/db')
 const { auth, isAdmin } = require('../controllers/auth')
 
@@ -47,19 +48,34 @@ postRouter.get('/:id', async (req, res) => {
 postRouter.delete('/:id', async (req, res) => {
   try {
     await deletePost(req.params.id)
-    res.status(200)
-    return
+    res.status(200).json({ status: 'Request successfull' })
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })
   }
 })
 
-// postRouter.put('/:id', async (req, res) => {
-//   try {
-//   } catch (error) {
-//     res.status(500).json({ error: 'Internal Database Error' })
-//   }
-// })
+postRouter.put('/:id', auth, async (req, res) => {
+  try {
+    const post = await getPostById(req.params.id)
+    if (post.authorId === req.user.id) {
+      try {
+        if (req.body.title && req.body.text) {
+          await updatePost(req.body.title, req.body.text, req.params.id)
+          res.status(200).json({ status: 'Request successfull' })
+        } else
+          res
+            .status(400)
+            .json({ error: 'Bad Request: Missing required fields ' })
+      } catch (error) {
+        res.status(500).json({ error: 'Internal Database Error' })
+      }
+    } else {
+      res.status(403).json({ error: "Forbidden: You don't have permission" })
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
 
 postRouter.use('/:id/comments', (req, res, next) => {
   req.postId = req.params.id

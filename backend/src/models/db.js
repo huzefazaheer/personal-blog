@@ -58,6 +58,25 @@ async function createPost(title, text, authorId) {
   })
 }
 
+async function updatePost(title, text, id) {
+  await prisma.post.update({
+    where: { id: id },
+    data: {
+      text: text,
+      title: title,
+    },
+  })
+}
+
+async function updateComment(comment, id) {
+  await prisma.comment.update({
+    where: { id: id },
+    data: {
+      comment: comment,
+    },
+  })
+}
+
 async function createUser(username, password) {
   const user = await prisma.user.create({
     data: {
@@ -121,4 +140,6 @@ module.exports = {
   deletePost,
   deleteComment,
   createComment,
+  updateComment,
+  updatePost,
 }

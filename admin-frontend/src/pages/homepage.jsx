@@ -1,46 +1,51 @@
-import { useEffect, useState } from 'react'
 import Navbar from '../components/navbar/nav'
-import { api } from '../App'
+import { getAllPosts, getPublicPosts } from '../util/postapi'
+import { useNavigate, useParams } from 'react-router-dom'
+import { getAllUsers } from '../util/userapi'
+import { useEffect } from 'react'
 
 export default function Home({ jwt }) {
-  const [data, setData] = useState([])
+  const { type } = useParams()
+  const navigate = useNavigate()
 
   useEffect(() => {
-    async function getData() {
-      const req = await fetch(api + 'posts')
-      const res = await req.json()
-      setData(res)
+    if (!jwt) {
+      navigate('/')
     }
-    if (jwt) {
-      getData()
-    }
-  }, [jwt])
+  }, [])
 
-  let posts
-  if (data && data.length > 0) {
-    posts = data.map((post) => {
-      return <Blog data={post}></Blog>
-    })
+  let response
+  switch (type) {
+    case 'allposts':
+      response = getAllPosts(jwt)
+      break
+    case 'users':
+      response = getAllUsers(jwt)
+      break
+    default:
+      response = getPublicPosts()
   }
 
-  let response = <></>
-  if (jwt) {
-    response = (
-      <>
-        <Navbar></Navbar>
-        {posts}
-      </>
-    )
-  }
+  //   let posts
+  //   if (data && data.length > 0) {
+  //     posts = data.map((post) => {
+  //       return <Blog data={post}></Blog>
+  //     })
+  //   }
 
-  return response
-}
+  //   let response = <></>
+  //   if (jwt) {
+  //     response = (
+  //       <>
+  //         <Navbar></Navbar>
+  //         {posts}
+  //       </>
+  //     )
+  //   }
 
-function Blog({ data }) {
   return (
     <>
-      <h2>{data.title}</h2>
-      <p>{data.text}</p>
+      <Navbar></Navbar>
     </>
   )
 }

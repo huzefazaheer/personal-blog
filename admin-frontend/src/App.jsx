@@ -13,8 +13,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login setjwt={setjwt} />} />
+          <Route path="/" element={<Login jwt={jwt} setjwt={setjwt} />} />
           <Route path="/home" element={<Home jwt={jwt} />} />
+          <Route path="/home/:type" element={<Home jwt={jwt} />} />
         </Routes>
       </BrowserRouter>
     </>

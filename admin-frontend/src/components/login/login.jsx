@@ -1,13 +1,19 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { api } from '../../App'
 import { useNavigate } from 'react-router-dom'
 
-export default function Login({ setjwt }) {
+export default function Login({ jwt, setjwt }) {
   const navigate = useNavigate()
 
   const [data, setData] = useState({ username: '', password: '' })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (jwt) {
+      navigate('/home')
+    }
+  }, [])
 
   async function login(e) {
     e.preventDefault()

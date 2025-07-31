@@ -1,7 +1,8 @@
 const { PrismaClient } = require('../../generated/prisma/client.js')
+const { connect } = require('../routes/postRoutes.js')
 const prisma = new PrismaClient()
 
-async function getAllPosts(limit, jump) {
+async function getAllPosts(jump = 0, limit = 10) {
   const posts = await prisma.post.findMany({
     skip: jump,
     take: limit,
@@ -42,10 +43,33 @@ async function getPostComments(id) {
   return comments
 }
 
+async function createPost(title, text, authorId) {
+  await prisma.post.create({
+    data: {
+      text: text,
+      title: title,
+      authorId: authorId,
+    },
+  })
+}
+
+async function createUser(username, password) {
+  const user = await prisma.user.create({
+    data: {
+      username: username,
+      password: password,
+    },
+  })
+
+  return user
+}
+
 module.exports = {
   getAllPosts,
   getPostById,
   getPostById,
   getCommentById,
   getPostComments,
+  createPost,
+  createUser,
 }

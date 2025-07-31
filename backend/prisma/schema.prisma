@@ -24,12 +24,13 @@ model User {
 }
 
 model Comment {
-  id              String @unique @default(uuid())
-  text            String
-  commenter       User   @relation(fields: [commentedById], references: [id])
+  id              String   @unique @default(uuid())
+  comment         String
+  commenter       User     @relation(fields: [commentedById], references: [id])
   commentedById   String
   commentedPostId String
-  postCommented   Post   @relation(fields: [commentedPostId], references: [id])
+  postCommented   Post     @relation(fields: [commentedPostId], references: [id])
+  dataAdded       DateTime @default(now())
 }
 
 model Post {
@@ -38,6 +39,7 @@ model Post {
   text          String
   author        User      @relation(fields: [authorId], references: [id])
   authorId      String
-  datePublished DateTime
+  datePublished DateTime  @default(now())
   postComments  Comment[]
+  isPublished   Boolean   @default(false)
 }

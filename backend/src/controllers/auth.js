@@ -33,7 +33,9 @@ async function signup(req, res) {
 async function auth(req, res, next) {
   const authHeader = req.headers['authorization']
   if (!authHeader) {
-    res.status(401).json({ error: 'Unauthorized: Missing or invalid token' })
+    // res.status(401).json({ error: 'Unauthorized: Missing or invalid token' })
+    const error = new Error('401')
+    next(error)
     return
   }
   const token = authHeader.split(' ')[1]

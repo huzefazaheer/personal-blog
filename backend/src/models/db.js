@@ -144,6 +144,16 @@ async function setPostPublic(id) {
   })
 }
 
+async function getUserByUsername(usernmae) {
+  const user = await prisma.user.findUnique({
+    where: {
+      username: usernmae,
+    },
+  })
+
+  return user
+}
+
 module.exports = {
   getAllPosts,
   getAllPublicPosts,
@@ -163,4 +173,5 @@ module.exports = {
   updateComment,
   updatePost,
   setPostPublic,
+  getUserByUsername,
 }

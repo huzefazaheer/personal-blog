@@ -21,7 +21,9 @@ app.use('/users', userRouter)
 app.use('/comments', commentRouter)
 app.use('/auth', authRouter)
 
-app.listen(8080)
+app.listen(8080, () => {
+  console.log('Server started on port:', '8080')
+})
 
 //posts
 //posts/post

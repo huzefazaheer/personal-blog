@@ -1,0 +1,66 @@
+import { useState } from 'react'
+import { api } from '../../App'
+import { useNavigate } from 'react-router-dom'
+
+export default function Login({ setjwt }) {
+  const navigate = useNavigate()
+
+  const [data, setData] = useState({ username: '', password: '' })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  async function login(e) {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const req = await fetch(api + 'auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    const res = await req.json()
+    setLoading(false)
+    if (typeof res == 'string') {
+      setjwt(res)
+      navigate('/home')
+    } else setError('Invalid username or password')
+  }
+
+  return (
+    <div>
+      <form>
+        <h2>Login</h2>
+        <div className="input">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value={data.username}
+            onChange={(e) => setData({ ...data, username: e.target.value })}
+          />
+        </div>
+        <div className="input">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            value={data.password}
+            onChange={(e) => setData({ ...data, password: e.target.value })}
+          />
+        </div>
+        <p id="formerror">{error}</p>
+        <button
+          id={!loading ? '' : 'loading'}
+          type="submit"
+          onClick={(e) => login(e)}
+        >
+          Login
+        </button>
+      </form>
+    </div>
+  )
+}

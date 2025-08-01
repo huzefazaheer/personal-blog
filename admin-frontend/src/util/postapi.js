@@ -1,6 +1,13 @@
 import axios from 'axios'
 import { api } from '../App'
 
+export async function getPostById(jwt, id) {
+  const response = await axios.get(api + 'posts/' + id, {
+    headers: { Authorization: `Bearer ${jwt}` },
+  })
+  return response.data
+}
+
 export async function getAllPosts(jwt) {
   const response = await axios.get(api + 'posts/all', {
     headers: { Authorization: `Bearer ${jwt}` },

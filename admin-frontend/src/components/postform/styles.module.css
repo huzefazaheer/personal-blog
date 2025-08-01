@@ -1,0 +1,30 @@
+.editor {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.editor label {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.editor input {
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.editor button {
+  margin-top: 10%;
+}
+
+.inputtext {
+  background-color: white;
+  height: 320px;
+  color: black;
+}

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   deletePost,
   getAllPosts,
+  getPostById,
   getPublicPosts,
   setPostPrivate,
 } from '../../util/postapi'

@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import AllPosts from './pages/allPosts/allposts'
 import AllPublicPosts from './pages/allPublicPosts/allposts'
 import AllUsers from './pages/allusers/allusers'
+import PostForm from './components/postform/postform'
 
 export const api = 'http://localhost:8080/'
 

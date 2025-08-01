@@ -48,3 +48,31 @@ export async function deletePost(jwt, id) {
   })
   return response
 }
+
+export async function apipushPost(jwt, title, text) {
+  const response = await axios.post(
+    api + 'posts/',
+    {
+      title,
+      text,
+    },
+    {
+      headers: { Authorization: `Bearer ${jwt}` },
+    },
+  )
+  return response
+}
+
+export async function apieditPost(jwt, id, title, text) {
+  const response = await axios.put(
+    api + 'posts/' + id,
+    {
+      title,
+      text,
+    },
+    {
+      headers: { Authorization: `Bearer ${jwt}` },
+    },
+  )
+  return response
+}

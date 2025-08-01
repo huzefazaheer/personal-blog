@@ -17,6 +17,7 @@ export default function AllPosts({ jwt }) {
   const [showPostForm, setShowPostForm] = useState({
     show: false,
     newpost: false,
+    id: null,
   })
   const [prevPostData, setPrevPostData] = useState({})
 
@@ -38,6 +39,7 @@ export default function AllPosts({ jwt }) {
         setPostPub={setPostPub}
         delPost={delPost}
         editPost={editpost}
+        setPostPriv={setPostPriv}
       ></Post>
     )
   })
@@ -50,10 +52,14 @@ export default function AllPosts({ jwt }) {
     console.log(await setPostPublic(jwt.current, id))
   }
 
+  async function setPostPriv(id) {
+    console.log(await setPostPriv(jwt.current, id))
+  }
+
   async function editpost(id) {
     const post = await getPostById(jwt, id)
     setPrevPostData(post)
-    setShowPostForm({ show: true, newpost: false })
+    setShowPostForm({ show: true, newpost: false, id: id })
   }
 
   const res = (
@@ -61,7 +67,9 @@ export default function AllPosts({ jwt }) {
       <Navbar />
       <h1>All Posts</h1>
       {posts}
-      <button onClick={() => setShowPostForm({ show: true, newpost: true })}>
+      <button
+        onClick={() => setShowPostForm({ show: true, newpost: true, id: null })}
+      >
         New Post
       </button>
     </>
@@ -74,15 +82,17 @@ export default function AllPosts({ jwt }) {
           <PostForm
             oldtitle=""
             oldtext=""
-            newPost={true}
+            showPostForm={showPostForm}
             setShowPostForm={setShowPostForm}
+            jwt={jwt.current}
           />
         ) : (
           <PostForm
             oldtitle={prevPostData.title}
             oldtext={prevPostData.text}
-            newPost={false}
+            showPostForm={showPostForm}
             setShowPostForm={setShowPostForm}
+            jwt={jwt.current}
           />
         )
       ) : (
@@ -92,20 +102,29 @@ export default function AllPosts({ jwt }) {
   )
 }
 
-function Post({ post, setPostPub, delPost, editPost }) {
+function Post({ post, setPostPub, delPost, editPost, setPostPriv }) {
   return (
     <div className={styles.post}>
       <h3>{post.title}</h3>
-      <p>{post.id}</p>
+      <p>{post.isPublished ? 'Public Post' : 'Private Post'}</p>
+      <button id="alt" onClick={() => console.log('comments')}>
+        Edit Comments
+      </button>
       <button id="alt" onClick={() => editPost(post.id)}>
-        Edit
+        Edit Post
       </button>
       <button id="alt" onClick={() => delPost(post.id)}>
         Delete
       </button>
-      <button id="alt" onClick={() => setPostPub(post.id)}>
-        Make Public
-      </button>
+      {post.isPublished ? (
+        <button id="alt" onClick={() => setPostPriv(post.id)}>
+          Make Private
+        </button>
+      ) : (
+        <button id="alt" onClick={() => setPostPub(post.id)}>
+          Make Public
+        </button>
+      )}
     </div>
   )
 }

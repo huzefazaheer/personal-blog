@@ -103,11 +103,12 @@ export default function AllPosts({ jwt }) {
 }
 
 function Post({ post, setPostPub, delPost, editPost, setPostPriv }) {
+  const navigate = useNavigate()
   return (
     <div className={styles.post}>
       <h3>{post.title}</h3>
       <p>{post.isPublished ? 'Public Post' : 'Private Post'}</p>
-      <button id="alt" onClick={() => console.log('comments')}>
+      <button id="alt" onClick={() => navigate('/comments?postid=' + post.id)}>
         Edit Comments
       </button>
       <button id="alt" onClick={() => editPost(post.id)}>

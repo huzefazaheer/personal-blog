@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { , useState } from 'react'
 import { api } from '../../App'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,32 +9,32 @@ export default function Login({ jwt }) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  async function login(e) {
-    e.preventDefault()
-    setError('')
-    setLoading(true)
-    const req = await fetch(api + 'auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-    const res = await req.json()
-    setLoading(false)
-    if (typeof res == 'string') {
-      jwt.current = res
-      localStorage.setItem('jwt', res)
-      navigate('/posts')
-    } else setError('Invalid username or password')
-  }
+//   async function login(e) {
+//     e.preventDefault()
+//     setError('')
+//     setLoading(true)
+//     const req = await fetch(api + 'auth/login', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(data),
+//     })
+//     const res = await req.json()
+//     setLoading(false)
+//     if (typeof res == 'string') {
+//       jwt.current = res
+//       localStorage.setItem('jwt', res)
+//       navigate('/posts')
+//     } else setError('Invalid username or password')
+//   }
 
   return (
     <div>
       <form>
-        <h2>Login</h2>
+        <h2>New Post</h2>
         <div className="input">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Title</label>
           <input
             type="text"
             name="username"
@@ -44,7 +44,7 @@ export default function Login({ jwt }) {
           />
         </div>
         <div className="input">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Text</label>
           <input
             type="password"
             name="password"

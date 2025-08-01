@@ -1,51 +1,20 @@
-import Navbar from '../components/navbar/nav'
-import { getAllPosts, getPublicPosts } from '../util/postapi'
-import { useNavigate, useParams } from 'react-router-dom'
-import { getAllUsers } from '../util/userapi'
+import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import Login from '../components/login/login'
 
 export default function Home({ jwt }) {
-  const { type } = useParams()
   const navigate = useNavigate()
-
   useEffect(() => {
-    if (!jwt) {
-      navigate('/')
+    if (!localStorage.getItem('jwt')) {
+      return
     }
+    jwt.current = localStorage.getItem('jwt')
+    navigate('/posts')
   }, [])
-
-  let response
-  switch (type) {
-    case 'allposts':
-      response = getAllPosts(jwt)
-      break
-    case 'users':
-      response = getAllUsers(jwt)
-      break
-    default:
-      response = getPublicPosts()
-  }
-
-  //   let posts
-  //   if (data && data.length > 0) {
-  //     posts = data.map((post) => {
-  //       return <Blog data={post}></Blog>
-  //     })
-  //   }
-
-  //   let response = <></>
-  //   if (jwt) {
-  //     response = (
-  //       <>
-  //         <Navbar></Navbar>
-  //         {posts}
-  //       </>
-  //     )
-  //   }
 
   return (
     <>
-      <Navbar></Navbar>
+      <Login jwt={jwt} />
     </>
   )
 }

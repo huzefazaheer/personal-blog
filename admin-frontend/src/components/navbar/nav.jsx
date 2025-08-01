@@ -6,13 +6,13 @@ export default function Navbar() {
       <p>Blog Manager</p>
       <ul>
         <li>
-          <Link to="/home/posts">All Public Posts</Link>
+          <Link to="/posts">All Posts</Link>
         </li>
         <li>
-          <Link to="/home/allposts">All Posts</Link>
+          <Link to="/publicposts">All Public Posts</Link>
         </li>
         <li>
-          <Link to="/home/users">All Users </Link>
+          <Link to="/users">All Users </Link>
         </li>
       </ul>
     </nav>

@@ -1,0 +1,15 @@
+.post {
+  background-color: rgba(176, 177, 177, 0.272);
+  text-align: left;
+  padding: 10px 40px;
+  margin-bottom: 20px;
+  padding-bottom: 30px;
+}
+
+.post button:first-of-type {
+  margin-left: 0px;
+}
+
+.post button {
+  margin-left: 20px;
+}

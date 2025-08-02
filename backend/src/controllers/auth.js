@@ -57,18 +57,20 @@ async function isAdmin(req, res, next) {
     } else {
       res.status(403).json({ error: "Forbidden: You don't have permission" })
     }
-  } else return
+  } else res.status(403).json({ error: "Forbidden: You don't have permission" })
 }
 
 async function login(req, res) {
   const user1 = req.user
-  const user = await getUserById(user1.id)
-  const jwt = jsonwebtoken.sign(
-    { id: user.id, username: user.username, isAdmin: user.isAdmin },
-    process.env.SECRET,
-    { expiresIn: '1d' },
-  )
-  res.json(jwt)
+  if (req.user) {
+    const user = await getUserById(user1.id)
+    const jwt = jsonwebtoken.sign(
+      { id: user.id, username: user.username, isAdmin: user.isAdmin },
+      process.env.SECRET,
+      { expiresIn: '1d' },
+    )
+    res.json(jwt)
+  } else res.status(403).json({ error: "Forbidden: You don't have permission" })
 }
 
 module.exports = { signup, auth, isAdmin, login }

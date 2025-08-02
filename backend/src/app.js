@@ -14,7 +14,7 @@ const corsoptions = {
   optionsSuccessStatus: 200,
 }
 
-app.use(cors(corsoptions))
+app.use(cors())
 
 app.use('/posts', postRouter)
 app.use('/users', userRouter)

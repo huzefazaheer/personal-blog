@@ -7,6 +7,7 @@ const {
   updatePost,
   getAllPublicPosts,
   setPostPublic,
+  setPostPrivate,
 } = require('../models/db')
 const { auth, isAdmin, login } = require('../controllers/auth')
 
@@ -41,6 +42,15 @@ postRouter.get('/all', auth, isAdmin, async (req, res) => {
 postRouter.post('/:id/setpublic', auth, isAdmin, async (req, res) => {
   try {
     await setPostPublic(req.params.id)
+    res.status(200).json({ status: 'Request successfull' })
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Database Error' })
+  }
+})
+
+postRouter.post('/:id/setprivate', auth, isAdmin, async (req, res) => {
+  try {
+    await setPostPrivate(req.params.id)
     res.status(200).json({ status: 'Request successfull' })
   } catch (error) {
     res.status(500).json({ error: 'Internal Database Error' })

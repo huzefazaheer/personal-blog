@@ -22,9 +22,9 @@ commentRouter.get('/', async (req, res) => {
   }
 })
 
-commentRouter.post('/', auth, isAdmin, async (req, res) => {
+commentRouter.post('/', auth, async (req, res) => {
   try {
-    if (!(req.body.comment && req.user.id)) {
+    if (!(req.body && req.body.comment && req.user.id)) {
       res.status(400).json({ error: 'Bad Request: Missing required fields ' })
     }
 
@@ -44,10 +44,14 @@ commentRouter.get('/:id', async (req, res) => {
   }
 })
 
-commentRouter.delete('/:id', auth, isAdmin, async (req, res) => {
+commentRouter.delete('/:id', auth, async (req, res) => {
   try {
-    await deleteComment(req.params.id)
-    res.status(200).json({ status: 'Request successfull' })
+    const author = await getCommentById(req.params.id)
+    if (author.commentedById == req.user.id || req.user.isAdmin) {
+      await deleteComment(req.params.id)
+      res.status(200).json({ status: 'Request successfull' })
+    } else
+      res.status(403).json({ error: "Forbidden: You don't have permission" })
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Internal Database Error' })

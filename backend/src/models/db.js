@@ -1,22 +1,24 @@
 const { PrismaClient } = require('../../generated/prisma/client.js')
 const prisma = new PrismaClient()
 
-async function getAllPosts(jump = 0, limit = 10) {
+async function getAllPosts(jump = 0, limit = 20) {
   const posts = await prisma.post.findMany({
     skip: jump,
     take: limit,
+    include: { author: { select: { username: true } } },
   })
 
   return posts
 }
 
-async function getAllPublicPosts(jump = 0, limit = 10) {
+async function getAllPublicPosts(jump = 0, limit = 20) {
   const posts = await prisma.post.findMany({
     where: {
       isPublished: true,
     },
     skip: jump,
     take: limit,
+    include: { author: { select: { username: true } } },
   })
 
   return posts
@@ -31,6 +33,7 @@ async function getAllUsers() {
 async function getPostById(id) {
   const post = await prisma.post.findUnique({
     where: { id: id },
+    include: { author: { select: { username: true } } },
   })
 
   return post
@@ -107,6 +110,8 @@ async function deleteUser(id) {
 }
 
 async function deletePost(id) {
+  const post = await prisma.post.findUnique({ where: { id: id } })
+  await prisma.comment.deleteMany({ where: { commentedPostId: post.id } })
   await prisma.post.delete({
     where: { id: id },
   })
@@ -144,6 +149,13 @@ async function setPostPublic(id) {
   })
 }
 
+async function setPostPrivate(id) {
+  await prisma.post.update({
+    where: { id: id },
+    data: { isPublished: false },
+  })
+}
+
 async function getUserByUsername(usernmae) {
   const user = await prisma.user.findUnique({
     where: {
@@ -157,7 +169,6 @@ async function getUserByUsername(usernmae) {
 module.exports = {
   getAllPosts,
   getAllPublicPosts,
-  getPostById,
   getPostById,
   getCommentById,
   getPostComments,
@@ -173,5 +184,6 @@ module.exports = {
   updateComment,
   updatePost,
   setPostPublic,
+  setPostPrivate,
   getUserByUsername,
 }

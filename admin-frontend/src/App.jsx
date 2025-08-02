@@ -6,7 +6,7 @@ import AllPosts from './pages/allPosts/allposts'
 import AllUsers from './pages/allusers/allusers'
 import Comments from './pages/comments/comments'
 
-export const api = 'http://localhost:8080/'
+export const api = 'https://personal-blog-t7ww.onrender.com/'
 
 function App() {
   const jwt = useRef(null)

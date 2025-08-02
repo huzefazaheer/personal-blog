@@ -1,10 +1,12 @@
 const express = require('express')
 const cors = require('cors')
+const bcrypt = require('bcryptjs')
 const postRouter = require('./routes/postRoutes')
 const authRouter = require('./routes/authRoutes')
 const userRouter = require('./routes/userRoutes')
 const commentRouter = require('./routes/commentRoutes')
 const { login } = require('./controllers/auth')
+const { getUserByUsername } = require('./models/db')
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
@@ -37,6 +39,7 @@ app.use(async (error, req, res, next) => {
         res.status(403).json({ error: "Forbidden: You don't have permission" })
     } catch (error) {
       res.status(500).json({ error: 'Internal Database Error' })
+      console.log(error)
     }
   } else res.status(400).json({ error: 'Bad Request: Missing required fields' })
 }, login)

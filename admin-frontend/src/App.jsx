@@ -6,7 +6,7 @@ import AllPosts from './pages/allPosts/allposts'
 import AllUsers from './pages/allusers/allusers'
 import Comments from './pages/comments/comments'
 
-export const api = 'https://personal-blog-wzcv.onrender.com/'
+export const api = 'https://personal-blog-ucmf.onrender.com/'
 
 function App() {
   const jwt = useRef(null)

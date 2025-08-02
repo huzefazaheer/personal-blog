@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 const corsoptions = {
-  origin: 'http://localhost:5173',
+  origin: process.env.ADMINAPP,
   optionsSuccessStatus: 200,
 }
 

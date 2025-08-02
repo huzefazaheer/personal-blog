@@ -9,9 +9,6 @@ export default function Navbar() {
           <Link to="/posts">All Posts</Link>
         </li>
         <li>
-          <Link to="/publicposts">All Public Posts</Link>
-        </li>
-        <li>
           <Link to="/users">All Users </Link>
         </li>
       </ul>

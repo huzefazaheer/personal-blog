@@ -107,6 +107,8 @@ function Post({ post, setPostPub, delPost, editPost, setPostPriv }) {
   return (
     <div className={styles.post}>
       <h3>{post.title}</h3>
+      <p>{post.author.username}</p>
+      <p>{new Date(post.datePublished).toDateString()}</p>
       <p>{post.isPublished ? 'Public Post' : 'Private Post'}</p>
       <button id="alt" onClick={() => navigate('/comments?postid=' + post.id)}>
         Edit Comments

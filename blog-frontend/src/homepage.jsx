@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import Login from './login/login'
 import Signup from './signup/signup'
 
-export const api = 'http://localhost:8080/'
+export const api = 'https://personal-blog-ucmf.onrender.com/'
 
 export default function Home({ jwt }) {
   const [login, setLogin] = useState(true)

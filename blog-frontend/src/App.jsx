@@ -4,7 +4,7 @@ import Home from './homepage'
 import BlogPage from './blogpage/blogpage'
 import Blog from './blogdetail/blogdetail'
 
-export const api = 'http://localhost:8080/'
+export const api = 'https://personal-blog-ucmf.onrender.com/'
 
 function App() {
   const jwt = useRef(null)

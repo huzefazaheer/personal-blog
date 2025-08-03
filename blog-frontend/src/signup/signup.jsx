@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { api } from '../homepage'
 
-export default function Login({ jwt, setLogin }) {
+export default function Signup({ jwt, setLogin }) {
   const navigate = useNavigate()
 
   const [data, setData] = useState({ username: '', password: '' })
@@ -13,7 +13,7 @@ export default function Login({ jwt, setLogin }) {
     e.preventDefault()
     setError('')
     setLoading(true)
-    const req = await fetch(api + 'auth/login', {
+    const req = await fetch(api + 'auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,13 +26,13 @@ export default function Login({ jwt, setLogin }) {
       jwt.current = res
       localStorage.setItem('jwt', res)
       navigate('/blog')
-    } else setError('Invalid username or password')
+    } else setError('Error has occured')
   }
 
   return (
     <div>
       <form>
-        <h2>Login</h2>
+        <h2>Signup</h2>
         <div className="input">
           <label htmlFor="username">Username</label>
           <input
@@ -59,11 +59,11 @@ export default function Login({ jwt, setLogin }) {
           type="submit"
           onClick={(e) => login(e)}
         >
-          Login
+          Signup
         </button>
       </form>
       <p>
-        Already Have an account?{' '}
+        Don't have an account
         <span onClick={() => setLogin(false)}>Sign up</span>
       </p>
     </div>

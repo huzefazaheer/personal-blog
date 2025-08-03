@@ -1,0 +1,51 @@
+.blogholder {
+  margin-left: 90px;
+  margin-right: 90px;
+}
+
+.toppicksh1 {
+  color: #510d0d;
+  margin-top: 12vh;
+}
+
+.post {
+  background-color: #f1e4e4;
+  color: #661111;
+  padding: 30px 40px;
+  margin-top: 40px;
+}
+
+.postheading {
+  font-size: 40px;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+.tagholder {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.tag {
+  border: 2px solid #510d0d;
+  padding: 5px 10px;
+  font-weight: 600;
+  border-radius: 14px;
+}
+
+.post button {
+  background-color: #510d0d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 14px;
+  margin-top: 40px;
+}
+
+.text {
+  width: 100%;
+  margin-top: 20px;
+  line-height: 25px;
+}

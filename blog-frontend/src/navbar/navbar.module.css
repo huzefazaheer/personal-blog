@@ -1,0 +1,11 @@
+.nav {
+  border-top: 10px solid #510d0d;
+}
+
+.nav p {
+  color: #510d0d;
+  font-size: 20;
+  font-weight: bold;
+  margin-left: 90px;
+  margin-top: 40px;
+}

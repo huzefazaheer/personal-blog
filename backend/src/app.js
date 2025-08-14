@@ -19,6 +19,10 @@ app.use('/users', userRouter)
 app.use('/comments', commentRouter)
 app.use('/auth', authRouter)
 
+app.use('/ping', (req, res) =>
+  res.redirect('https://personal-blog-kim2.vercel.app/'),
+)
+
 app.use(async (error, req, res, next) => {
   if (req.body && req.body.username && req.body.password) {
     try {
